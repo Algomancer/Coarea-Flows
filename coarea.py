@@ -304,7 +304,7 @@ def viz_panels(model: CoareaFlow, filename: str):
 def train(model: CoareaFlow, n_iter: int = 6000, batch_size: int = 512, lr: float = 1e-3):
     """Maximum-likelihood training with a compiled loss."""
     data_init(model, gen_data(4096))
-    loss_fn = torch.compile(lambda x: -model.log_prob(x).mean(), fullgraph=True)
+    loss_fn = torch.compile(lambda x: -model.log_prob(x).mean(), fullgraph=True, mode="reduce-overhead")
     optimizer = torch.optim.Adam(model.parameters(), lr=lr)
     pbar = trange(n_iter)
     for i in pbar:
